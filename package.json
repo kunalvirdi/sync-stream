@@ -1,6 +1,6 @@
 {
-  "name": "dev-finder",
-  "version": "0.1.0",
+  "name": "sync-stream",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
