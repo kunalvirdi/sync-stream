@@ -19,9 +19,9 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 const githubUrlSchema = z.string().regex(
-    /^(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+\/?$/,
+    /^(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\/?$/,
     {
-        message: "Invalid GitHub URL",
+        message: "Invalid GitHub URL. The URL must be in the format 'username/repositoryname'.",
     }
 );
 
