@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/auth";
 import { StreamChat } from "stream-chat";
+import {decreaseRoomCount, getRoomCount, getRoom} from "@/data-access/rooms";
 
 export async function generateTokenAction() {
   const session = await getSession();
@@ -16,4 +17,14 @@ export async function generateTokenAction() {
   const token = serverClient.createToken(session.user.id);
   console.log("token", token);
   return token;
+}
+
+export async function decreaseCount(roomId:string){
+  await decreaseRoomCount(roomId)
+}
+export async function getCount(roomId:string){
+  await getRoomCount(roomId)
+}
+export async function roomm(roomId:string){
+  return await getRoom(roomId)
 }

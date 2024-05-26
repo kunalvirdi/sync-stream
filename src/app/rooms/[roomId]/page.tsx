@@ -1,21 +1,26 @@
 import { TagsList } from "@/components/tags-list";
-import { getRoom } from "@/data-access/rooms";
+import {getRoom, getRoomCount, increaseRoomCount} from "@/data-access/rooms";
 import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import { DevFinderVideo } from "./video-player";
 import { splitTags } from "@/lib/utils";
 import { unstable_noStore } from "next/cache";
+import {redirect} from "next/navigation";
+import {useToast} from "@/components/ui/use-toast";
 
 export default async function RoomPage(props: { params: { roomId: string } }) {
   unstable_noStore();
   const roomId = props.params.roomId;
-
   const room = await getRoom(roomId);
 
   if (!room) {
     return <div>No room of this ID found</div>;
   }
-
+  const roomCount=await getRoomCount(roomId);
+  if(roomCount===10){
+    return <div className='text-red-500 text-xl flex justify-center items-center h-[100vh]'>Room limit exceeded. Till the time please explore other rooms.<Link className='text-blue-600 ml-1 hover:underline' href='/browse'>Browse Rooms</Link></div>
+  }
+  await increaseRoomCount(roomId)
   return (
     <div className="grid grid-cols-4 min-h-screen">
       <div className="col-span-3 p-4 pr-2">

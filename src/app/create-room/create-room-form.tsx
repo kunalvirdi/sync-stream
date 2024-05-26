@@ -17,11 +17,12 @@ import { Input } from "@/components/ui/input";
 import { createRoomAction } from "./actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import {insertRoomCount} from "@/data-access/rooms";
 
 const githubUrlSchema = z.string().regex(
     /^(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\/?$/,
     {
-        message: "Invalid GitHub URL. The URL must be in the format 'username/repositoryname'.",
+        message: "Invalid GitHub URL. The URL must be in the format 'https://www.github.com/username/repositoryname'.",
     }
 );
 
@@ -49,6 +50,7 @@ export function CreateRoomForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const room = await createRoomAction(values);
+
     toast({
       title: "Room Created",
       description: "Your room was successfully created",

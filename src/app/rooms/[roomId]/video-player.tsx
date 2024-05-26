@@ -12,19 +12,23 @@ import {
   StreamVideo,
   StreamVideoClient,
 } from "@stream-io/video-react-sdk";
+import {decreaseRoomCount} from "@/data-access/rooms";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
-import { generateTokenAction } from "./actions";
+import {decreaseCount, generateTokenAction} from "./actions";
 import { useRouter } from "next/navigation";
 
 const apiKey = process.env.NEXT_PUBLIC_GET_STREAM_API_KEY!;
 
 export function DevFinderVideo({ room }: { room: Room }) {
+  const leaveCallHandler=async ()=>{
+    await decreaseCount(room.id)
+    router.push("/browse");
+  }
   const session = useSession();
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | null>(null);
   const router = useRouter();
-
   useEffect(() => {
     if (!room) return;
     if (!session.data) {
@@ -61,9 +65,7 @@ export function DevFinderVideo({ room }: { room: Room }) {
           <StreamCall call={call}>
             <SpeakerLayout />
             <CallControls
-              onLeave={() => {
-                router.push("/browse");
-              }}
+              onLeave={leaveCallHandler}
             />
             <CallParticipantsList onClose={() => undefined} />
           </StreamCall>

@@ -17,6 +17,6 @@ export async function deleteRoomAction(roomId: string) {
   }
 
   await deleteRoom(roomId);
-
+  revalidatePath(`rooms/${roomId}`);
   revalidatePath("/your-rooms");
 }

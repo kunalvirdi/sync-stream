@@ -1,6 +1,6 @@
 "use server";
 
-import { createRoom } from "@/data-access/rooms";
+import { createRoom} from "@/data-access/rooms";
 import { Room } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";

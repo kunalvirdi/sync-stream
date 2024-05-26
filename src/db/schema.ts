@@ -75,4 +75,10 @@ export const room = pgTable("room", {
   githubRepo: text("githubRepo"),
 });
 
+export const roomCount = pgTable('roomCount', {
+    roomId: text("roomId").primaryKey(), // Define roomId as a string and set it as the primary key
+    count: integer("count"), // Define count as an integer
+});
+
+
 export type Room = typeof room.$inferSelect;

@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { Room, room } from "@/db/schema";
+import { Room, room,roomCount } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import {sql} from "drizzle-orm"
 import { getSession } from "@/lib/auth";
@@ -32,6 +32,7 @@ export async function getRoom(roomId: string) {
 
 export async function deleteRoom(roomId: string) {
   await db.delete(room).where(eq(room.id, roomId));
+  await db.delete(roomCount).where(eq(roomCount.roomId,roomId));
 }
 
 export async function createRoom(
@@ -52,4 +53,31 @@ export async function editRoom(roomData: Room) {
     .where(eq(room.id, roomData.id))
     .returning();
   return updated[0];
+}
+
+export async function getRoomCount(roomId:string){
+  const roomC = await db.query.roomCount.findFirst({
+    where: eq(roomCount.roomId, roomId)
+  })
+  if(!roomC) return 0;
+  return roomC?.count
+}
+export async function increaseRoomCount(roomId:string) {
+  let count=<number> await getRoomCount(roomId)
+  if(count===0){
+    await db.insert(roomCount).values({roomId,count:1})
+    return;
+  }
+  count++;
+  await db.update(roomCount).set({count}).where(eq(roomCount.roomId,roomId));
+}
+
+export async function decreaseRoomCount(roomId:string){
+  let count=<number> await getRoomCount(roomId)
+  if(count===0){
+    await db.delete(roomCount).where(eq(roomCount.roomId,roomId))
+    return;
+  }
+  count--;
+  await db.update(roomCount).set({count}).where(eq(roomCount.roomId,roomId))
 }
