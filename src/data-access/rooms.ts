@@ -74,7 +74,7 @@ export async function increaseRoomCount(roomId:string) {
 
 export async function decreaseRoomCount(roomId:string){
   let count=<number> await getRoomCount(roomId)
-  if(count===1){
+  if(count===0){
     await db.delete(roomCount).where(eq(roomCount.roomId,roomId))
     return;
   }
