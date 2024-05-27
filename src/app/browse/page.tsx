@@ -15,7 +15,7 @@ export default async function Home({
 }) {
   unstable_noStore();
   const rooms = await getRooms(searchParams.search);
-
+  rooms.reverse();
   return (
     <main className="min-h-screen p-16">
       <div className="flex justify-between items-center mb-8">
