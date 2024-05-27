@@ -59,7 +59,7 @@ export async function getRoomCount(roomId:string){
   const roomC = await db.query.roomCount.findFirst({
     where: eq(roomCount.roomId, roomId)
   })
-  if(!roomC) return ;
+  if(!roomC) return 0;
   return roomC?.count
 }
 export async function increaseRoomCount(roomId:string) {
@@ -74,7 +74,7 @@ export async function increaseRoomCount(roomId:string) {
 
 export async function decreaseRoomCount(roomId:string){
   let count=<number> await getRoomCount(roomId)
-  if(count===0){
+  if(count===1){
     await db.delete(roomCount).where(eq(roomCount.roomId,roomId))
     return;
   }
